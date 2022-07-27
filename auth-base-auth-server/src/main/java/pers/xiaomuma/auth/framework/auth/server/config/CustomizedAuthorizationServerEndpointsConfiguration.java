@@ -34,16 +34,12 @@ import org.springframework.stereotype.Component;
 import pers.xiaomuma.auth.framework.auth.server.endpoint.CustomizedTokenEndpoint;
 import pers.xiaomuma.auth.framework.auth.server.endpoint.TokenManagerEndpoint;
 import pers.xiaomuma.auth.framework.auth.server.store.CustomTokenStore;
-
 import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author Dave Syer
- *
- */
+
 @Configuration
 @Import(CustomizedAuthorizationServerEndpointsConfiguration.TokenKeyEndpointRegistrar.class)
 public class CustomizedAuthorizationServerEndpointsConfiguration {
