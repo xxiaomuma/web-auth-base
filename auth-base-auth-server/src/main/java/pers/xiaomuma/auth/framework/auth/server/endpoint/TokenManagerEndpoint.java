@@ -14,7 +14,6 @@ import pers.xiaomuma.auth.framework.auth.server.store.CustomTokenStore;
 import pers.xiaomuma.auth.framework.auth.server.store.FindKeysResult;
 import pers.xiaomuma.framework.page.PageResult;
 import pers.xiaomuma.framework.response.BaseResponse;
-import pers.xiaomuma.framework.response.ViewResponse;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,12 +26,12 @@ public class TokenManagerEndpoint {
     private CustomTokenStore tokenStore;
 
     @DeleteMapping("/{token}")
-    public BaseResponse removeToken(@PathVariable("token") String token) {
+    public BaseResponse<Void> removeToken(@PathVariable("token") String token) {
         return this.removeTokenFromTokenStore(token);
     }
 
     @PostMapping("/page")
-    public ViewResponse<PageResult<Map<String, String>>> getTokenPage(@RequestBody Map<String, Object> params,
+    public BaseResponse<PageResult<Map<String, String>>> getTokenPage(@RequestBody Map<String, Object> params,
                                                                       @RequestHeader(required = false) String from) {
         if (StrUtil.isBlank(from)) {
             return null;
@@ -71,7 +70,7 @@ public class TokenManagerEndpoint {
         PageResult<Map<String, String>> pageRecord = new PageResult<>(current, size);
         pageRecord.setTotal(result.getCount());
         pageRecord.setRecords(list);
-        return ViewResponse.success(pageRecord);
+        return BaseResponse.success(pageRecord);
     }
 
 
@@ -83,15 +82,15 @@ public class TokenManagerEndpoint {
         this.tokenStore = tokenStore;
     }
 
-    private BaseResponse removeTokenFromTokenStore(String tokenValue) {
+    private BaseResponse<Void> removeTokenFromTokenStore(String tokenValue) {
         OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
         if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
-            return BaseResponse.builder().success(true).build();
+            return BaseResponse.success();
         }
         tokenStore.removeAccessToken(accessToken);
         OAuth2RefreshToken refreshToken = accessToken.getRefreshToken();
         tokenStore.removeRefreshToken(refreshToken);
-        return BaseResponse.builder().success(true).build();
+        return BaseResponse.success();
     }
 
 }

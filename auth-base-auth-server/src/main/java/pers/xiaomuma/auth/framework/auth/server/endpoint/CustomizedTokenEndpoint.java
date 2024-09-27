@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.*;
 import pers.xiaomuma.auth.framework.auth.server.store.CustomTokenStore;
 import pers.xiaomuma.auth.framework.auth.server.token.DefaultTokenRequestContext;
 import pers.xiaomuma.auth.framework.auth.server.token.TokenRequestContextHolder;
-import pers.xiaomuma.framework.response.ViewResponse;
+import pers.xiaomuma.framework.response.BaseResponse;
+
 import java.security.Principal;
 import java.util.*;
 
@@ -94,9 +95,9 @@ public class CustomizedTokenEndpoint extends AbstractEndpoint {
     }
 
     @DeleteMapping("/logout")
-    public ViewResponse<Void> logout(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
+    public BaseResponse<Void> logout(@RequestHeader(value = HttpHeaders.AUTHORIZATION, required = false) String authHeader) {
         if (StrUtil.isBlank(authHeader)) {
-            return ViewResponse.failed("退出失败，token 为空");
+            return BaseResponse.failed("退出失败，token 为空");
         }
         String tokenValue = authHeader.replace(OAuth2AccessToken.BEARER_TYPE, StrUtil.EMPTY).trim();
         return removeTokenFromTokenStore(tokenValue);
@@ -144,16 +145,16 @@ public class CustomizedTokenEndpoint extends AbstractEndpoint {
         return clientId;
     }
 
-    private ViewResponse<Void> removeTokenFromTokenStore(String tokenValue) {
+    private BaseResponse<Void> removeTokenFromTokenStore(String tokenValue) {
         OAuth2AccessToken accessToken = tokenStore.readAccessToken(tokenValue);
         if (accessToken == null || StrUtil.isBlank(accessToken.getValue())) {
-            return ViewResponse.success();
+            return BaseResponse.success();
         }
         tokenStore.removeAccessToken(accessToken);
 
         OAuth2RefreshToken refreshToken = accessToken.getRefreshToken();
         tokenStore.removeRefreshToken(refreshToken);
-        return  ViewResponse.success();
+        return  BaseResponse.success();
     }
 
     private ResponseEntity<OAuth2AccessToken> getResponse(OAuth2AccessToken accessToken) {
