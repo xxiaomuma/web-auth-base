@@ -5,12 +5,12 @@
     <parent>
         <artifactId>web-base</artifactId>
         <groupId>pers.xiaomuma.web</groupId>
-        <version>2.0-SNAPSHOT</version>
+        <version>20241010-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>web-auth-base</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -19,4 +19,22 @@
         <module>auth-base-auth-client</module>
         <module>auth-base-auth-server</module>
     </modules>
+
+    <properties>
+        <revision>20241010-SNAPSHOT</revision>
+        <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <base.web.version>20241010-SNAPSHOT</base.web.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>pers.xiaomuma.web</groupId>
+                <artifactId>web-base-common</artifactId>
+                <version>${base.web.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
 </project>

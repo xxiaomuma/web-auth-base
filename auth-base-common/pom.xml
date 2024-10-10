@@ -4,10 +4,11 @@
     <parent>
         <artifactId>web-auth-base</artifactId>
         <groupId>pers.xiaomuma.web</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>auth-base-common</artifactId>
+    <version>${revision}</version>
 
     <dependencies>
         <dependency>
@@ -17,7 +18,6 @@
         <dependency>
             <groupId>pers.xiaomuma.web</groupId>
             <artifactId>web-base-common</artifactId>
-            <version>2.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
